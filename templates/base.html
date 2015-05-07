@@ -2,25 +2,27 @@
 <html>
 <head>
   <title>Ratings</title>
+  <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Allan:400,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
-  Ratings
-  <a href="/log-out">Log Out</a>
-  <hr>
+    <div class="container">
 
-      <!-- Show flashed messages -->
-  {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-          <div class="alert alert-warning">{{ message }}</div>
-      {% endfor %}
-  {% endwith %}
+        <!-- Show flashed messages -->
+        {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+        <div class="alert alert-warning">{{ message }}</div>
+        {% endfor %}
+        {% endwith %}
 
-  <!-- This is where the main content goes. -->
-  {% block content %}
-      BODY OF PAGE GOES HERE VIA INHERITANCE
-  {% endblock %}
+        <!-- This is where the main content goes. -->
+        {% block content %}
+        BODY OF PAGE GOES HERE VIA INHERITANCE
+        {% endblock %}
 
-</div>
+        <a href="/log-out">Log Out</a>
+    </div>
 </body>
 </html>

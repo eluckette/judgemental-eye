@@ -32,7 +32,7 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
-@app.route('/user/<int:user_id>')
+@app.route('/users/<int:user_id>')
 def show_user(user_id):
     """Show user"""
 
@@ -46,30 +46,81 @@ def movie_list():
     movies = Movie.query.order_by(Movie.title).all()
     return render_template('movie_list.html', movies=movies)
 
-@app.route('/movie/<int:movie_id>', methods=['GET', 'POST'])
+@app.route('/movies/<int:movie_id>', methods=['GET', 'POST'])
 def show_movie(movie_id):
     """Show movie"""
     
-    rating_status = Rating.query.filter_by(user_id=session['username'], movie_id=movie_id).first()
+    current_rating = Rating.query.filter_by(user_id=session['username'], movie_id=movie_id).first()
+    if current_rating:
+        user_rating = current_rating.score
     movie = Movie.query.get(movie_id)
+    user_id = session['username']
 
-    if request.method == 'GET':
-        
-        return render_template('movie.html', movie=movie, rating_status=rating_status)
+    rating_scores = [r.score for r in movie.ratings]
+    avg_rating = float(sum(rating_scores)) / len(rating_scores)
 
-    else:
+    prediction = None
+
+    if request.method == 'POST':
 
         user_rating = request.form['user_rating']
             
-        if rating_status:
-            rating_status.score = user_rating
+        if current_rating:
+            current_rating.score = user_rating
 
         else:
-            rating_status = Rating(user_id=session['username'], movie_id=movie_id, score=user_rating)
-            db.session.add(rating_status)
+            current_rating = Rating(user_id=session['username'], movie_id=movie_id, score=user_rating)
+            db.session.add(current_rating)
             
         db.session.commit()        
-        return render_template('movie.html', movie=movie, rating_status=rating_status)
+    
+    if (not current_rating) and user_id:
+        user = User.query.get(user_id)
+        if user:
+            prediction = user.predict_rating(movie)
+            user_rating = prediction
+
+    the_eye = User.query.filter_by(email="the-eye@of-judgement.com").one()
+    eye_rating = Rating.query.filter_by(user_id=the_eye.user_id, movie_id=movie.movie_id).first()
+
+    if eye_rating is None:
+        eye_rating = the_eye.predict_rating(movie)
+
+    else:
+        eye_rating = eye_rating.score
+
+    if eye_rating and user_rating:
+        difference = abs(eye_rating - user_rating)
+
+    else:
+        difference = None
+
+    BERATEMENT_MESSAGES = [
+        "I suppose you don't have such bad taste after all.",
+        "I regret every decision that I've ever made that has brought me" +
+            " to listen to your opinion.",
+        "Words fail me, as your taste in movies has clearly failed you.",
+        "That movie is great. For a clown to watch. Idiot.",
+        "Words cannot express the awfulness of your taste."
+    ]
+
+    if difference is not None:
+        beratement = BERATEMENT_MESSAGES[int(difference)]
+
+    else:
+        beratement = None
+
+    return render_template(
+        "movie.html",
+        movie=movie,
+        current_rating=current_rating,
+        average=avg_rating,
+        prediction=prediction,
+        eye_rating=eye_rating,
+        beratement=beratement
+        )
+
+
 
 @app.route('/login')
 def login():
@@ -89,7 +140,7 @@ def handle_login():
         if user and (user.password == request.form['password']):
             session['username'] = user.user_id
             flash("Login successful!")
-            return redirect('/user/' + str(user.user_id))
+            return redirect('/users/' + str(user.user_id))
         else:
             flash("Invalid login.")
             return render_template('login_form.html')

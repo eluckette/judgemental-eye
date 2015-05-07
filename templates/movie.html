@@ -4,15 +4,25 @@
     <h1>Movie Profile</h1>
     <h2>{{movie.title}}</h2>
 
-    {% if rating_status %}
-      <p>You have already rated this movie: {{rating_status.score}}</p>
+    <p>The Eye's rating: {{ '%0.2f' %eye_rating }}</p>
+    <p>The Eye declares: {{ beratement }}</p> 
+
+    {% if current_rating %}
+      <p>You have already rated this movie: {{current_rating.score}}</p>
     {% else %}
       <p>You have not rated this movie yet!</p>
     {% endif %}
 
+    <p>Average Rating: {{ '%0.2f' %average }}</p>
+
+    {% if prediction %}
+      <p>We predict you will rate this movie: {{ '%0.2f' %prediction }}</p>
+    {% endif %}
+
+
     <a href="/movies">Go back to movies</a>
-    
-    <form action="/movie/{{movie.movie_id}}" method="POST">
+
+    <form action="/movies/{{movie.movie_id}}" method="POST">
       <label>Update/Add Rating: 
         <select name="user_rating">
           <option value=1>1</option>

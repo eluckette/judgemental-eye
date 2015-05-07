@@ -1,17 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Login</h1>
-
-<form action="/login-submission" method="POST">
-    <label>Username:
-        <input type="text" name="username">
-    </label>
-    <label>Password:
-        <input type="text" name="password">
-    </label>
-
-    <input type="submit" value="Login">
-</form>
+<div class="container-fluid" id="header">
+    <img src='/static/images/eye_logo.svg' id="logo">
+    <h1>The Judgemental Eye</h1>
+    <div id="login-box">
+        <form action="/login-submission" class="form-group" method="POST">
+            <div class="row">
+                <label>Username:
+                    <input class="form-control" type="text" name="username">
+                </label>
+            </div>
+            <div class="row">
+                <label>Password:
+                    <input class="form-control" type="text" name="password">
+                </label>
+            </div>
+            <input type="submit" value="Sign in" id="login-button">
+        </form>
+    </div>
+</div>
 
 {% endblock %}
