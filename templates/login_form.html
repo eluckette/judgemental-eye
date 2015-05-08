@@ -1,24 +1,38 @@
-{% extends 'base.html' %}
-{% block content %}
+<!doctype html>
+<html>
+<head>
+  <title>The Judgey Eye</title>
+  <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Allan:400,700' rel='stylesheet' type='text/css'>
+</head>
 
-<div class="container-fluid" id="header">
-    <img src='/static/images/eye_logo.svg' id="logo">
-    <h1>The Judgemental Eye</h1>
-    <div id="login-box">
-        <form action="/login-submission" class="form-group" method="POST">
-            <div class="row">
-                <label>Username:
-                    <input class="form-control" type="text" name="username">
-                </label>
-            </div>
-            <div class="row">
-                <label>Password:
-                    <input class="form-control" type="text" name="password">
-                </label>
-            </div>
-            <input type="submit" value="Sign in" id="login-button">
-        </form>
+<body>
+
+    {% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+        <div class="alert alert-warning">{{ message }}</div>
+    {% endfor %}
+    {% endwith %}
+
+    <div class="container-fluid" id="header">
+        <img src='/static/images/eye_logo.svg' id="logo">
+        <h1>The Judgey Eye</h1>
+        <div id="login-box">
+            <form action="/login-submission" class="form-group" method="POST">
+                <div class="row">
+                    <label>Username:
+                        <input class="form-control" type="text" name="username">
+                    </label>
+                </div>
+                <div class="row">
+                    <label>Password:
+                        <input class="form-control" type="text" name="password">
+                    </label>
+                </div>
+                <input type="submit" value="Sign in" id="login-button">
+            </form>
+        </div>
     </div>
-</div>
-
-{% endblock %}
+</body>
+</html>

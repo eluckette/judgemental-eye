@@ -3,24 +3,31 @@
 
 <h1>Register</h1>
 
-<form action="/registration-submission" method="POST">
-    <label>Username (Email address):
-        <input type="text" name="username">
-    </label><br><br>
-    <label>Password:
-        <input type="text" name="password">
-    </label><br><br>
-    <label>Re-enter password:
-        <input type="text" name="reenter_password">
-    </label><br><br>
-    <label>Age:
-        <input type="number" name="age">
-    </label><br><br>
-    <label>Zipcode:
-        <input type="text" name="zipcode">
-    </label><br><br>
+<div class="row">
+    <div class="col-lg-6">
+    <form action="/registration-submission" method="POST">
+        <label>Username (Email address):
+            <input type="text" name="username">
+        </label><br><br>
+        <label>Password:
+            <input type="text" name="password">
+        </label><br><br>
+        <label>Re-enter password:
+            <input type="text" name="reenter_password">
+        </label><br><br>
+        <label>Age:
+            <input type="number" name="age">
+        </label><br><br>
+        <label>Zipcode:
+            <input type="text" name="zipcode">
+        </label><br><br>
 
-    <input type="submit" value="Register!">
-</form>
-
+        <input type="submit" value="Register!">
+    </form>
+    </div>
+        
+    <div class="col-lg-6">
+        <img src='/static/images/eye_logo.svg' width='350px'>
+    </div>
+</div>
 {% endblock %}

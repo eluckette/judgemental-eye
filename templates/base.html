@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Ratings</title>
+  <title>The Judgey Eye</title>
   <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <link href='http://fonts.googleapis.com/css?family=Allan:400,700' rel='stylesheet' type='text/css'>
@@ -9,6 +9,10 @@
 
 <body>
     <div class="container">
+        <hr>
+        <a href="/users" class="header-link">View Users</a>
+        <a href="/movies" class="header-link">View Movies</a>
+        <hr>
 
         <!-- Show flashed messages -->
         {% with messages = get_flashed_messages() %}
@@ -22,7 +26,9 @@
         BODY OF PAGE GOES HERE VIA INHERITANCE
         {% endblock %}
 
+        <hr>
         <a href="/log-out">Log Out</a>
+        <hr>
     </div>
 </body>
 </html>

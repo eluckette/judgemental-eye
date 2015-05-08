@@ -1,52 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h1>Movie Profile</h1>
-    <h2>{{movie.title}}</h2>
+    <h1 class='titles'>{{movie.title}}</h1>
 
-    <p>The Eye's rating: {{ '%0.2f' %eye_rating }}</p>
-    <p>The Eye declares: {{ beratement }}</p> 
+    <div class="row">
+      <div class="col-lg-6">
+        <p><strong>Average Rating:</strong> {{ '%0.2f' %average }}</p>
 
-    {% if current_rating %}
-      <p>You have already rated this movie: {{current_rating.score}}</p>
-    {% else %}
-      <p>You have not rated this movie yet!</p>
-    {% endif %}
+        {% if current_rating %}
+        <p><strong>You have already rated this movie:</strong> {{current_rating.score}}</p>
+        {% else %}
+        <p><strong>You have not rated this movie yet!</strong></p>
+        {% endif %}
 
-    <p>Average Rating: {{ '%0.2f' %average }}</p>
+        {% if prediction %}
+        <p><strong>We predict you will rate this movie:</strong> {{ '%0.2f' %prediction }}</p>
+        {% endif %}
 
-    {% if prediction %}
-      <p>We predict you will rate this movie: {{ '%0.2f' %prediction }}</p>
-    {% endif %}
-
-
-    <a href="/movies">Go back to movies</a>
-
-    <form action="/movies/{{movie.movie_id}}" method="POST">
-      <label>Update/Add Rating: 
+        <form action="/movies/{{movie.movie_id}}" method="POST">
+        <label>Update/Add Rating: 
         <select name="user_rating">
-          <option value=1>1</option>
-          <option value=2>2</option>
-          <option value=3>3</option>
-          <option value=4>4</option>
-          <option value=5>5</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
         </select>
 
         <input type="submit">
-      </label>
-    </form>
+        </label>
+        </form>
 
-    <ul>
-      <li>Release: {{movie.released_at}}</li>
-      <li>IMDB: <a href="{{movie.imdb_url}}"> {{movie.imdb_url}} </a></li>
-      <li>Movie Ratings:</li>
         <ul>
-          {% for rating in movie.ratings %}
-            <li>{{rating.user_id}}: {{rating.score}}</li>
-          {% endfor %}
+        <li>Release Date: {{'%s-%s-%s' %(movie.released_at.month, movie.released_at.day, movie.released_at.year)}}</li>
+        <li><a href="{{movie.imdb_url}}"> IMDB </a></li>
+        <li>Movie Ratings:</li>
+        <ul>
+        {% for rating in movie.ratings %}
+        <li>User {{rating.user_id}}: {{rating.score}}</li>
+        {% endfor %}
         </ul>
-    </ul>
+        </ul>
+      </div>
+      
+      <div class="col-lg-6" id='movie-box'>
+        <img src='/static/images/eye_logo.svg' width='200px' class="the_eye">
+        <p><strong>The Eye's rating:</strong> {{ '%0.2f' %eye_rating }}</p>
+        <p id='quote'>"{{ beratement }}" -The Eye</p> 
+      </div>
+    </div>
 
+    <a href="/movies">Go back to movies</a>
 
 
 {% endblock %}
